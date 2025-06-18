@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/graphql/client.dart';
-import '../../authentication/screens/welcome_screen.dart';
-import '../widgets/profile_header.dart';
-import '../widgets/profile_menu_item.dart';
+import '../../home/widgets/authentication/screens/welcome_screen.dart';
+import '../../home/widgets/profile/widgets/profile_header.dart';
+import '../../home/widgets/profile/widgets/profile_menu_item.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
