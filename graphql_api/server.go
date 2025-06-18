@@ -46,7 +46,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = db.AutoMigrate(&entities.User{})
+	err = db.AutoMigrate(&entities.User{}, &entities.Note{})
 	if err != nil {
 		log.Fatalf("Failed to auto migrate database: %v", err)
 	}
@@ -54,13 +54,15 @@ func main() {
 
 	// Initialize services and pass the DB instance
 	userService := services.NewUserService(db)
+	noteService := services.NewNoteService(db)
 
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{
 		Resolvers: &graph.Resolver{
-			DB:               db,
-			JWTSecret:        jwtSecret,
-			ForContextFunc:   middleware.GetAuthenticatedUserFromContext,
-			UserService:      userService,
+			DB:             db,
+			JWTSecret:      jwtSecret,
+			ForContextFunc: middleware.GetAuthenticatedUserFromContext,
+			UserService:    userService,
+			NoteService:    noteService,
 		},
 	}))
 
@@ -79,8 +81,8 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowOriginFunc: func(origin string) bool {
 			return strings.HasPrefix(origin, "http://localhost:") ||
-				   strings.HasPrefix(origin, "http://127.0.0.1:") ||
-                   strings.HasPrefix(origin, "http://10.0.2.2:") // Tambahkan ini untuk Android Emulator
+				strings.HasPrefix(origin, "http://127.0.0.1:") ||
+				strings.HasPrefix(origin, "http://10.0.2.2:") // Tambahkan ini untuk Android Emulator
 		},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
@@ -93,4 +95,3 @@ func main() {
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
-
