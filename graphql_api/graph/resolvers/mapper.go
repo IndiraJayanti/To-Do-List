@@ -3,6 +3,7 @@ package resolvers
 import (
 	"graphql_api/entities"
 	"graphql_api/graph/model"
+	"time"
 )
 
 // MapUserEntityToModel mengkonversi entities.User ke model.User
@@ -40,5 +41,16 @@ func MapNoteEntityToModel(noteEntity *entities.Note) *model.Note {
 		ReminderTime: reminderTimeStr, // Tambahkan ini
 		User:         MapUserEntityToModel(noteEntity.User),
 		Category:     MapCategoryEntityToModel(noteEntity.Category),
+	}
+}
+
+// MapCategoryEntityToModel mengkonversi entities.Category ke model.Category
+func MapCategoryEntityToModel(categoryEntity *entities.Category) *model.Category {
+	if categoryEntity == nil {
+		return nil
+	}
+	return &model.Category{
+		ID:   int32(categoryEntity.ID),
+		Name: categoryEntity.Name,
 	}
 }

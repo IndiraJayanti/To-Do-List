@@ -18,4 +18,6 @@ type Resolver struct {
 	ForContextFunc func(context.Context) *model.User
 	NoteService    *services.NoteService
 	UserService    *services.UserService
+	CategoryService *services.CategoryService
+
 }
