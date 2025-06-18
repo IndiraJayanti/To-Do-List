@@ -92,10 +92,18 @@ func main() {
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		Debug:            true,
 	})
+
+	// Initialize WebSocket handler
+	websocket.InitWebSocket()
+
 	// Bungkus handler HTTP Anda dengan middleware CORS
 	http.Handle("/", c.Handler(playground.Handler("GraphQL playground", "/query")))
 	http.Handle("/query", c.Handler(middleware.AuthMiddleware(srv, []byte(jwtSecret))))
 
+	// Add WebSocket endpoint
+	http.HandleFunc("/ws", websocket.HandleConnections) // New WebSocket endpoint
+
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	log.Printf("WebSocket endpoint available at ws://localhost:%s/ws", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
