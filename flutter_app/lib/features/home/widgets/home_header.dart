@@ -1,3 +1,5 @@
+// file: features/home/widgets/home_header.dart
+
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -25,20 +27,22 @@ class HomeHeader extends StatelessWidget {
       child: SafeArea(
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Hello!",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 4),
-                  Text(
+                  const SizedBox(height: 4),
+                  const Text(
                     "Got something to plan today?",
                     style: TextStyle(color: Colors.white70),
                   ),
@@ -57,67 +61,6 @@ class HomeHeader extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class MyHomeScreenWithStack extends StatelessWidget {
-  const MyHomeScreenWithStack({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    const double headerHeight = kToolbarHeight + 60;
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Padding(
-              padding: const EdgeInsets.only(top: headerHeight - 20),
-              child: ListView.builder(
-                itemCount: 50,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Item ${index + 1}",
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: HomeHeader(
-              greenText: Colors.green,
-              onProfileTap: () {
-                print("Profile tapped!");
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(const MyAppStack());
-}
-
-class MyAppStack extends StatelessWidget {
-  const MyAppStack({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fixed Header Stack Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomeScreenWithStack(),
     );
   }
 }

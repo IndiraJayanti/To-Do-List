@@ -36,8 +36,6 @@ class _HomeScreenState extends State<HomeScreen>
   AnimationController? _notificationAnimationController;
   Timer? _notificationDismissTimer;
 
-  late final List<Widget> _widgetOptions;
-
   @override
   void initState() {
     super.initState();
@@ -47,12 +45,6 @@ class _HomeScreenState extends State<HomeScreen>
         setState(() => _searchQuery = _searchController.text);
       }
     });
-
-    _widgetOptions = <Widget>[
-      _buildHomeNotesContent(),
-      const DiskusiScreen(),
-      const ProfileScreen(),
-    ];
 
     _periodicReminderChecker = Timer.periodic(const Duration(seconds: 5), (
       timer,
@@ -255,9 +247,7 @@ class _HomeScreenState extends State<HomeScreen>
             categoryResult.data!['categories'].map(
               (cat) => {
                 'label': cat['name'],
-                'icon': _getCategoryIcon(
-                  cat['name'],
-                ), // Use the helper method here
+                'icon': _getCategoryIcon(cat['name']),
               },
             ),
           );
@@ -304,7 +294,19 @@ class _HomeScreenState extends State<HomeScreen>
               return categoryName == _selectedCategory;
             }).toList();
 
+            filteredNotes.sort((a, b) {
+              final dateA =
+                  DateTime.tryParse(a['updatedAt'] ?? '') ?? DateTime(1970);
+              final dateB =
+                  DateTime.tryParse(b['updatedAt'] ?? '') ?? DateTime(1970);
+              return dateB.compareTo(dateA);
+            });
+
             return RefreshIndicator(
+              // --- PERBAIKAN WARNA REFRESH INDICATOR ---
+              color: greenText,
+              backgroundColor: pastelGreen,
+              // --- AKHIR PERBAIKAN ---
               onRefresh: () async {
                 setState(() {
                   _allNotesCache = [];
@@ -353,7 +355,14 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: const Color(0xFFF7FFF7),
       body: SafeArea(
-        child: IndexedStack(index: _bottomNavIndex, children: _widgetOptions),
+        child: IndexedStack(
+          index: _bottomNavIndex,
+          children: <Widget>[
+            _buildHomeNotesContent(),
+            const DiskusiScreen(),
+            const ProfileScreen(),
+          ],
+        ),
       ),
       floatingActionButton: _bottomNavIndex == 0
           ? _buildFloatingActionButton(
@@ -391,10 +400,9 @@ class _HomeScreenState extends State<HomeScreen>
         );
         if (result == true && mounted) {
           _refetchNotes?.call();
-          // panggil _checkReminders dengan forceShow: true setelah menyimpan/memperbarui
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
-              _checkReminders(forceShow: true); // Notifikasi akan muncul lagi
+              _checkReminders(forceShow: true);
             }
           });
         }
@@ -433,19 +441,24 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _buildNotesSliverGrid(List notes, Color pastelGreen, Color greenText) {
     if (notes.isEmpty) {
-      return SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Text(
-            _searchQuery.isEmpty
-                ? 'Belum ada catatan. Ayo buat satu!'
-                : 'Catatan untuk "$_searchQuery" tidak ditemukan',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey[600], fontSize: 16),
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * 0.15,
+          ),
+          child: Center(
+            child: Text(
+              _searchQuery.isEmpty
+                  ? 'Belum ada catatan. Ayo buat satu!'
+                  : 'Catatan untuk "$_searchQuery" tidak ditemukan',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+            ),
           ),
         ),
       );
     }
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverGrid(
@@ -508,10 +521,9 @@ class _HomeScreenState extends State<HomeScreen>
         );
         if (result == true && mounted) {
           _refetchNotes?.call();
-          // panggil _checkReminders dengan forceShow: true setelah menyimpan/memperbarui
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
-              _checkReminders(forceShow: true); // Notifikasi akan muncul lagi
+              _checkReminders(forceShow: true);
             }
           });
         }
