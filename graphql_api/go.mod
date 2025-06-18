@@ -6,6 +6,7 @@ toolchain go1.23.10
 
 require (
 	github.com/99designs/gqlgen v0.17.75
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/vektah/gqlparser/v2 v2.5.28
 	golang.org/x/crypto v0.31.0
 	gorm.io/driver/postgres v1.6.0
