@@ -18,6 +18,11 @@ type Note {
   reminderTime: String 
 }
 
+type Category {
+  id: Int!
+  name: String!
+}
+
 # New type for authentication response
 type AuthResponse {
   token: String!
@@ -27,12 +32,12 @@ type AuthResponse {
 type Query {
   users: [User!]!
   user(id: Int!): User
+    notes: [Note!]!
+  notesByCategory(idCategory: ID!): [Note!]!
+  favoriteNotes: [Note!]!
+  categories: [Category!]!
+  category(id: Int!): Category
   me: User
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
 }
 
 type Mutation {
