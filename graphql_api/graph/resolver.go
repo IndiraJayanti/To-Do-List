@@ -12,9 +12,10 @@ import (
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
-type Resolver struct{
-	DB *gorm.DB
-	JWTSecret string // Tambahkan field untuk secret key JWT
+type Resolver struct {
+	DB             *gorm.DB
+	JWTSecret      string // Tambahkan field untuk secret key JWT
 	ForContextFunc func(context.Context) *model.User
-	UserService *services.UserService
+	NoteService    *services.NoteService
+	UserService    *services.UserService
 }

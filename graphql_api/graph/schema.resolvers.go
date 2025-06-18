@@ -33,6 +33,28 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id int32) (bool, erro
 	return resolvers.NewUserMutationResolver(r.UserService, nil).DeleteUser(ctx, id) // Perubahan jika delete tidak butuh generate token
 }
 
+// CreateNote is the resolver for the createNote field.
+// PERBAIKI: Tambahkan `reminderTime` sebagai parameter.
+func (r *mutationResolver) CreateNote(ctx context.Context, title string, content string, isFavorite bool, createdBy string, idCategory string, reminderTime *string) (*model.Note, error) {
+	// Mengakses service langsung dari r
+	// Pastikan parameter reminderTime juga diteruskan ke fungsi CreateNote di resolver
+	return resolvers.NewNoteMutationResolver(r.NoteService).CreateNote(ctx, title, content, isFavorite, createdBy, idCategory, reminderTime)
+}
+
+// UpdateNote is the resolver for the updateNote field.
+// PERBAIKI: Tambahkan `reminderTime` sebagai parameter.
+func (r *mutationResolver) UpdateNote(ctx context.Context, id int32, title *string, content *string, isFavorite *bool, idCategory *string, reminderTime *string) (*model.Note, error) {
+	// Mengakses service langsung dari r
+	// Pastikan parameter reminderTime juga diteruskan ke fungsi UpdateNote di resolver
+	return resolvers.NewNoteMutationResolver(r.NoteService).UpdateNote(ctx, id, title, content, isFavorite, idCategory, reminderTime)
+}
+
+// DeleteNote is the resolver for the deleteNote field.
+func (r *mutationResolver) DeleteNote(ctx context.Context, id int32) (bool, error) {
+	// Mengakses service langsung dari r
+	return resolvers.NewNoteMutationResolver(r.NoteService).DeleteNote(ctx, id)
+}
+
 // Register is the resolver for the register field.
 func (r *mutationResolver) Register(ctx context.Context, name string, email string, password string) (*model.AuthResponse, error) {
 	// Mengakses service langsung dari r
@@ -59,6 +81,24 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 func (r *queryResolver) User(ctx context.Context, id int32) (*model.User, error) {
 	// Mengakses service langsung dari r
 	return resolvers.NewUserQueryResolver(r.UserService).User(ctx, id)
+}
+
+// Notes is the resolver for the notes field.
+func (r *queryResolver) Notes(ctx context.Context) ([]*model.Note, error) {
+	// Mengakses service langsung dari r
+	return resolvers.NewNoteQueryResolver(r.NoteService).Notes(ctx, r.ForContextFunc)
+}
+
+// NotesByCategory is the resolver for the notesByCategory field.
+func (r *queryResolver) NotesByCategory(ctx context.Context, idCategory string) ([]*model.Note, error) {
+	// Mengakses service langsung dari r
+	return resolvers.NewNoteQueryResolver(r.NoteService).NotesByCategory(ctx, idCategory, r.ForContextFunc)
+}
+
+// FavoriteNotes is the resolver for the favoriteNotes field.
+func (r *queryResolver) FavoriteNotes(ctx context.Context) ([]*model.Note, error) {
+	// Mengakses service langsung dari r
+	return resolvers.NewNoteQueryResolver(r.NoteService).FavoriteNotes(ctx, r.ForContextFunc)
 }
 
 // Me is the resolver for the me field.
