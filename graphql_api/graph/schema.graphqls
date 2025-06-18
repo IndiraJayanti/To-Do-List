@@ -1,0 +1,31 @@
+type User {
+  id: Int!
+  name: String!
+  email: String!
+}
+
+# New type for authentication response
+type AuthResponse {
+  token: String!
+  user: User!
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User
+  me: User
+}
+
+input NewTodo {
+  text: String!
+  userId: String!
+}
+
+type Mutation {
+  createUser(name: String!, email: String!, password: String!): User!
+  updateUser(id: Int!, name: String, email: String, password: String): User
+  deleteUser(id: Int!): Boolean!
+  
+  register(name: String!, email: String!, password: String!): AuthResponse!
+  login(email: String!, password: String!): AuthResponse!
+}
