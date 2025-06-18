@@ -46,7 +46,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = db.AutoMigrate(&entities.User{}, &entities.Note{})
+	err = db.AutoMigrate(&entities.User{}, &entities.Note{}, &entities.Category{})
 	if err != nil {
 		log.Fatalf("Failed to auto migrate database: %v", err)
 	}
@@ -55,6 +55,8 @@ func main() {
 	// Initialize services and pass the DB instance
 	userService := services.NewUserService(db)
 	noteService := services.NewNoteService(db)
+	categoryService := services.NewCategoryService(db)
+
 
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{
 		Resolvers: &graph.Resolver{
@@ -63,6 +65,8 @@ func main() {
 			ForContextFunc: middleware.GetAuthenticatedUserFromContext,
 			UserService:    userService,
 			NoteService:    noteService,
+			CategoryService:  categoryService,
+
 		},
 	}))
 
