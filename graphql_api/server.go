@@ -12,6 +12,7 @@ import (
 	"graphql_api/graph"
 	"graphql_api/middleware"
 	"graphql_api/services"
+	"graphql_api/websocket"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
