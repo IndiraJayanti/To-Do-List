@@ -4,6 +4,20 @@ type User {
   email: String!
 }
 
+type Note {
+  id: Int!
+  title: String!
+  content: String!
+  isFavorite: Boolean!
+  createdBy: Int!
+  idCategory: Int!
+  createdAt: String!
+  updatedAt: String!
+  user: User!
+  category: Category!
+  reminderTime: String 
+}
+
 # New type for authentication response
 type AuthResponse {
   token: String!
@@ -25,6 +39,10 @@ type Mutation {
   createUser(name: String!, email: String!, password: String!): User!
   updateUser(id: Int!, name: String, email: String, password: String): User
   deleteUser(id: Int!): Boolean!
+
+  createNote(title: String!, content: String!, isFavorite: Boolean!, createdBy: ID!, idCategory: ID!, reminderTime: String): Note!
+  updateNote(id: Int!, title: String, content: String, isFavorite: Boolean, idCategory: ID, reminderTime: String): Note
+  deleteNote(id: Int!): Boolean!
   
   register(name: String!, email: String!, password: String!): AuthResponse!
   login(email: String!, password: String!): AuthResponse!
