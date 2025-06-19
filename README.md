@@ -143,3 +143,11 @@ Berikut adalah beberapa kueri dan mutasi utama yang tersedia. Untuk daftar lengk
 * `createNote(title: ..., content: ..., idCategory: ..., reminderTime: ...)`: Membuat rencana baru.
 * `updateNote(id: ..., title: ..., content: ..., isFavorite: ..., ...)`: Memperbarui rencana yang ada.
 * `deleteNote(id: Int!)`: Menghapus sebuah rencana.
+
+---
+
+Anggota Kelompok :
+Gusti Ayu Purna Savitri - 42230034
+Nabila Christian Putri Hermawan - 42230022
+Komang Indira Tri Jayanti - 42230062
+I Gede Danendra Suputra - 42230063
