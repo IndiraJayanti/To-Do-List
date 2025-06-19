@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/graphql/client.dart';
-import '../../home/widgets/authentication/screens/welcome_screen.dart';
-import '../../home/widgets/profile/widgets/profile_header.dart';
-import '../../home/widgets/profile/widgets/profile_menu_item.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_app/graphql/query_mutation.dart';
+import '../../authentication/screens/welcome_screen.dart';
+import '../widgets/profile_header.dart';
+import '../widgets/profile_menu_item.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -57,7 +59,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: const Color(0xFFF7FFF7),
       body: Column(
         children: [
-          const ProfileHeader(),
+          Query(
+            options: QueryOptions(
+              document: gql(meQuery),
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+            ),
+            builder:
+                (
+                  QueryResult result, {
+                  VoidCallback? refetch,
+                  FetchMore? fetchMore,
+                }) {
+                  // Menampilkan header dengan teks placeholder saat loading
+                  if (result.isLoading) {
+                    return const ProfileHeader(
+                      userName: "Memuat...",
+                      userEmail: "...",
+                    );
+                  }
+
+                  // Menampilkan header dengan pesan error jika gagal
+                  if (result.hasException) {
+                    return const ProfileHeader(
+                      userName: "Gagal Memuat Data",
+                      userEmail: "Coba lagi",
+                    );
+                  }
+
+                  // Mengambil data jika berhasil
+                  final user = result.data?['me'];
+                  final String? userName = user?['name'];
+                  final String? userEmail = user?['email'];
+
+                  // Menampilkan header dengan data pengguna
+                  return ProfileHeader(
+                    userName: userName,
+                    userEmail: userEmail,
+                  );
+                },
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),

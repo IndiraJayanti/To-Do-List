@@ -1,3 +1,4 @@
+// home_screen.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/graphql/query_mutation.dart';
@@ -303,10 +304,8 @@ class _HomeScreenState extends State<HomeScreen>
             });
 
             return RefreshIndicator(
-              // --- PERBAIKAN WARNA REFRESH INDICATOR ---
               color: greenText,
               backgroundColor: pastelGreen,
-              // --- AKHIR PERBAIKAN ---
               onRefresh: () async {
                 setState(() {
                   _allNotesCache = [];
@@ -318,9 +317,30 @@ class _HomeScreenState extends State<HomeScreen>
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: HomeHeader(
-                      greenText: greenText,
-                      onProfileTap: () => setState(() => _bottomNavIndex = 2),
+                    child: Query(
+                      options: QueryOptions(document: gql(meQuery)),
+                      builder:
+                          (
+                            QueryResult result, {
+                            VoidCallback? refetch,
+                            FetchMore? fetchMore,
+                          }) {
+                            String? userName;
+                            if (result.hasException) {
+                              print(result.exception.toString());
+                            }
+
+                            if (!result.isLoading && result.data != null) {
+                              userName = result.data?['me']?['name'];
+                            }
+
+                            return HomeHeader(
+                              greenText: greenText,
+                              onProfileTap: () =>
+                                  setState(() => _bottomNavIndex = 2),
+                              userName: userName,
+                            );
+                          },
                     ),
                   ),
                   SliverToBoxAdapter(

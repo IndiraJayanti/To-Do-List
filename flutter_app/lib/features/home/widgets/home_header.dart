@@ -1,15 +1,15 @@
-// file: features/home/widgets/home_header.dart
-
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
   final Color greenText;
   final VoidCallback onProfileTap;
+  final String? userName; // Parameter untuk nama pengguna
 
   const HomeHeader({
     super.key,
     required this.greenText,
     required this.onProfileTap,
+    this.userName, // Ditambahkan di constructor
   });
 
   @override
@@ -32,7 +32,9 @@ class HomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello!",
+                    userName != null && userName!.isNotEmpty
+                        ? 'Halo, $userName!'
+                        : 'Hello!',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -54,7 +56,7 @@ class HomeHeader extends StatelessWidget {
               child: const CircleAvatar(
                 radius: 22,
                 backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=80',
+                  'https://cdn.pixabay.com/photo/2022/08/10/18/10/cat-7377822_960_720.png',
                 ),
               ),
             ),

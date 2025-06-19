@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  final String? userName;
+  final String? userEmail;
+
+  const ProfileHeader({super.key, this.userName, this.userEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -14,32 +17,32 @@ class ProfileHeader extends StatelessWidget {
           bottomRight: Radius.circular(30),
         ),
       ),
-      child: const Row(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 45,
             backgroundColor: Colors.white,
             backgroundImage: NetworkImage(
-              'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=80',
+              'https://cdn.pixabay.com/photo/2022/08/10/18/10/cat-7377822_960_720.png',
             ),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Budi Siregar",
-                style: TextStyle(
+                userName ?? "Nama Pengguna", // Fallback jika nama null
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 6),
+              const SizedBox(height: 6),
               Text(
-                "budi@gmail.com",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
+                userEmail ?? "email@pengguna.com", // Fallback jika email null
+                style: const TextStyle(color: Colors.white70, fontSize: 16),
               ),
             ],
           ),
