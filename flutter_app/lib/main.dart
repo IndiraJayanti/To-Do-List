@@ -3,7 +3,7 @@ import 'package:flutter_app/graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/features/authentication/screens/welcome_screen.dart';
-//import 'package:flutter_app/features/home/screens/home_screen.dart';
+import 'package:flutter_app/features/home/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
